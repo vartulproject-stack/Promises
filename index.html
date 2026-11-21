@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Humare Promises ❤️</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+      color: #2d1b2e;
+      padding: 1.2rem;
+      overflow: hidden;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      width: 100%;
+      max-width: 460px;
+      border-radius: 24px;
+      padding: 2.2rem 1.8rem;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(173, 20, 87, 0.25);
+      position: relative;
+      z-index: 2;
+      transition: transform 0.3s ease;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: #ffe0e9;
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ff4b72, #ff758c);
+      transition: width 0.4s ease;
+    }
+
+    .step-badge {
+      display: inline-block;
+      background: #fff0f5;
+      color: #d81b60;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+
+    .emoji {
+      font-size: 3.2rem;
+      margin-bottom: 0.8rem;
+      display: block;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      color: #ad1457;
+      margin-bottom: 0.8rem;
+    }
+
+    .promise-text {
+      font-size: 1.15rem;
+      line-height: 1.6;
+      color: #4a2c40;
+      min-height: 4.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.8rem;
+      font-weight: 500;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 0.8rem;
+      justify-content: center;
+    }
+
+    button {
+      border: none;
+      padding: 0.85rem 1.6rem;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-yes {
+      background: linear-gradient(135deg, #ff416c, #ff4b2b);
+      color: #ffffff;
+      box-shadow: 0 8px 20px rgba(255, 65, 108, 0.35);
+    }
+
+    .btn-yes:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(255, 65, 108, 0.45);
+    }
+
+    .btn-restart {
+      background: #ffe3ec;
+      color: #ad1457;
+      margin-top: 1rem;
+    }
+
+    .summary-list {
+      text-align: left;
+      list-style: none;
+      margin: 1rem 0 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      max-height: 240px;
+      overflow-y: auto;
+      padding-right: 0.3rem;
+    }
+
+    .summary-list li {
+      background: #fff5f8;
+      border-left: 4px solid #ff416c;
+      padding: 0.55rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      color: #3d1e32;
+    }
+
+    .heart {
+      position: fixed;
+      bottom: -20px;
+      font-size: 1.4rem;
+      animation: floatUp linear forwards;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes floatUp {
+      to {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card" id="card">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <span class="step-badge" id="stepBadge">Promise 1 of 7</span>
+    <span class="emoji" id="emoji">🤝</span>
+    <h1 id="title">Aap Humse Promise Kijiye...</h1>
+    <p class="promise-text" id="promiseText"></p>
+
+    <div class="btn-group" id="btnGroup">
+      <button class="btn-yes" id="promiseBtn">Hum Promise Karte Hain ❤️</button>
+    </div>
+  </div>
+
+  <script>
+    const promises = [
+      {
+        emoji: "🤝",
+        text: "Promise kijiye ki aap hamesha humare saath hain."
+      },
+      {
+        emoji: "🫶",
+        text: "Promise kijiye ki aap kabhi humko nahi chhodengi."
+      },
+      {
+        emoji: "😊",
+        text: "Promise kijiye ki humlog hamesha khush rahenge."
+      },
+      {
+        emoji: "🤞",
+        text: "Promise kijiye ki aap aur hum kabhi bhi kuch nahi chhupayenge."
+      },
+      {
+        emoji: "💪",
+        text: "Promise kijiye ki situation kaisi bhi ho, humlog saath mein solution karenge."
+      },
+      {
+        emoji: "💍",
+        text: "Promise kijiye ki humlog shaadi karenge."
+      },
+      {
+        emoji: "✨",
+        text: "Promise kijiye ki humlog ekdam Happy Ending karenge."
+      }
+    ];
+
+    let currentIndex = 0;
+
+    const stepBadge = document.getElementById("stepBadge");
+    const emojiEl = document.getElementById("emoji");
+    const titleEl = document.getElementById("title");
+    const promiseText = document.getElementById("promiseText");
+    const progressFill = document.getElementById("progressFill");
+    const btnGroup = document.getElementById("btnGroup");
+
+    function renderPromise() {
+      const item = promises[currentIndex];
+      stepBadge.textContent = `Promise ${currentIndex + 1} of ${promises.length}`;
+      emojiEl.textContent = item.emoji;
+      promiseText.textContent = item.text;
+      progressFill.style.width = `${(currentIndex / promises.length) * 100}%`;
+    }
+
+    function spawnHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      const icons = ["❤️", "💖", "💍", "✨", "🥰"];
+      heart.textContent = icons[Math.floor(Math.random() * icons.length)];
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = Math.random() * 2 + 3 + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+
+    function showFinalScreen() {
+      progressFill.style.width = "100%";
+      stepBadge.textContent = "Humare Saare 7 Promises Pakke ❤️";
+      emojiEl.textContent = "💑";
+      titleEl.textContent = "Humari Happy Ending!";
+
+      const listHtml = promises
+        .map((p) => `<li>✅ ${p.text}</li>`)
+        .join("");
+
+      promiseText.outerHTML = `<ul class="summary-list">${listHtml}</ul>`;
+      btnGroup.innerHTML = `<button class="btn-restart" onclick="location.reload()">Phir Se Padhein 🔁</button>`;
+
+      for (let i = 0; i < 30; i++) {
+        setTimeout(spawnHeart, i * 120);
+      }
+    }
+
+    document.getElementById("promiseBtn").addEventListener("click", () => {
+      spawnHeart();
+      currentIndex++;
+
+      if (currentIndex < promises.length) {
+        renderPromise();
+      } else {
+        showFinalScreen();
+      }
+    });
+
+    renderPromise();
+  </script>
+</body>
+</html>
